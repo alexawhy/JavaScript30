@@ -9,6 +9,10 @@
 
     <div class="clock">
       <div class="clock-face">
+        <div class="mark twelve"></div>
+        <div class="mark three"></div>
+        <div class="mark six"></div>
+        <div class="mark nine"></div>
         <div class="hand hour-hand"></div>
         <div class="hand min-hand"></div>
         <div class="hand second-hand"></div>
@@ -69,8 +73,9 @@
 
     .hour-hand {
       width: 30%;
-      height: 8px;
+      height: 10px;
       left: 20%; 
+      transform: translate(-50%, -50%);
     }
 
     .min-hand {
@@ -78,11 +83,13 @@
       height: 6px;
       top: 50%;
       left: 10%;
+      transform: translate(-50%, -50%);
     }
 
     .second-hand {
       width: 50%;
       height: 3px;
+      transform: translate(-50%, -50%);
     }
 
     .center {
@@ -96,6 +103,37 @@
       border-radius: 10px;
     }
 
+    .mark {
+      width: 6px;
+      height: 20px;
+      background: white;
+      position: absolute;
+    }
+
+    .twelve {
+      height: 25px;
+      width: 8px;
+      left: 50%;
+      transform: translate(-50%, -25%);
+    }
+
+    .three {
+      left: 100%;
+      top: 50%;
+      transform: translate(-50%, -50%) rotate(90deg);
+    }
+
+    .six {
+      left: 50%;
+      top: 100%;
+      transform: translate(-50%, -50%);
+    }
+
+    .nine {
+      left: 0%;
+      top: 50%;
+      transform: translate(-50%, -50%) rotate(90deg);
+    }
   </style>
 
   <script>
@@ -108,13 +146,13 @@
       const seconds = now.getSeconds();
       const minutes = now.getMinutes();
       const hours = now.getHours() % 12;
-      const secondDegrees = ((seconds / 60) * 360) + 90;
-      const minuteDegrees = ((minutes / 60) * 360) + 90;
-      const hourDegrees = ((hours / 12) * 360) + 90;
-      secondHand.style.transform = `rotate(${secondDegrees}deg)`;
-      minuteHand.style.transform = `rotate(${minuteDegrees}deg)`;
-      hourHand.style.transform = `rotate(${hourDegrees}deg)`;
-      console.log(`${hours}:${minutes}:${seconds}`);
+      const secondDegreesOffset = ((seconds / 60) * 360);
+      const minuteDegreesOffset = ((minutes / 60) * 360);
+      const hourDegreesOffset = ((hours / 12) * 360);
+      secondHand.style.transform = `rotate(${secondDegreesOffset + 90}deg)`;
+      minuteHand.style.transform = `rotate(${minuteDegreesOffset + (secondDegreesOffset / 60) + 90}deg)`;
+      hourHand.style.transform = `rotate(${hourDegreesOffset + (minuteDegreesOffset / 12) + 90}deg)`;
+      console.log(`${hours}:${minutes}:${seconds}`)
     }
 
     setInterval(setDate, 1000);
